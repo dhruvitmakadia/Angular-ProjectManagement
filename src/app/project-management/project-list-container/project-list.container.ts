@@ -30,4 +30,13 @@ export class ProjectListContainer implements OnInit {
     // Gets project list from the database server
     this.projectList$ = this.projectManagementService.getProjectList();
   }
+
+  /**
+   * deleteProject
+   * @param id id of project
+   */
+  public async deleteProject(id: number): Promise<void> {
+    this.projectManagementService.deleteProject(id);
+    await this.getProjectList();
+  }
 }

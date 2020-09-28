@@ -12,6 +12,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { OrderPipe } from './pipes/order.pipe';
 import { FilterPipe } from './pipes/filter.pipe';
 import { FormsModule } from '@angular/forms';
+import { OverlayModule } from '@angular/cdk/overlay';
+import { PortalModule } from '@angular/cdk/portal';
 
 
 @NgModule({
@@ -26,6 +28,8 @@ import { FormsModule } from '@angular/forms';
     CommonModule,
     HttpClientModule,
     FormsModule,
+    OverlayModule,
+    PortalModule,
     ProjectManagementRoutingModule
   ],
   providers: [

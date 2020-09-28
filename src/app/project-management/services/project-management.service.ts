@@ -26,4 +26,14 @@ export class ProjectManagementService {
     const url: string = `${this.baseUrl}/projects`;
     return this.httpClient.get<ProjectList[]>(url);
   }
+
+  /**
+   * getProjectList
+   * @description to get all project list
+   * @param id project id
+   */
+  public deleteProject(id: number): Observable<ProjectList> {
+    const url: string = `${this.baseUrl}/projects/${id}`;
+    return this.httpClient.delete<ProjectList>(url);
+  }
 }

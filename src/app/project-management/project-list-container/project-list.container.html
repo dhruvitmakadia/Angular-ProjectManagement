@@ -1,2 +1,2 @@
-<project-list-presentation-ui [projectList]='projectList$  | async' >
+<project-list-presentation-ui [projectList]='projectList$  | async'  (sendId)="deleteProject($event)">
 </project-list-presentation-ui>

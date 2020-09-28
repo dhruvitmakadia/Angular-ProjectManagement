@@ -1,6 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewContainerRef } from '@angular/core';
 import { ProjectList } from '../../models/project-list.model';
 import { ProjectListPresenter } from '../project-list-presenter/project-list.presenter';
+import Swal from 'sweetalert2';
 
 @Component({
   // tslint:disable-next-line: component-selector
@@ -27,6 +28,12 @@ export class ProjectListPresentation implements OnInit {
     return this.project;
   }
 
+  // output event to add project details
+  @Output() public addProject: EventEmitter<ProjectList>;
+  // output event to update project details
+  @Output() public updateProject: EventEmitter<ProjectList>;
+  // send project id for get project
+  @Output() public sendId: EventEmitter<number>;
 
   // list after filter
   public filteredProjectList: ProjectList[];
@@ -40,9 +47,13 @@ export class ProjectListPresentation implements OnInit {
   public fieldName: string;
   // For reversing the project list
   public reverse: boolean;
+  // Search Query
+  public searchQuery: string;
 
   // private property prpject of type array
   private project: ProjectList[];
+  // private property updatedDetails
+  private updatedDetails: ProjectList;
 
   constructor(
     private projectListPresenter: ProjectListPresenter,
@@ -51,6 +62,8 @@ export class ProjectListPresentation implements OnInit {
     this.currentPage = 1;
     this.pageSize = 5;
     this.fieldName = 'name';
+    this.searchQuery = '';
+    this.sendId = new EventEmitter<number>();
   }
 
   ngOnInit() {
@@ -86,9 +99,60 @@ export class ProjectListPresentation implements OnInit {
   }
 
   /**
-   * searchFilter
+   * deleteProject
+   * @description delete project
+   * @param id project id to delete
    */
-  public searchFilter(): void {
-
+  public deleteProject(id): void {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You want to delete this project!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, keep it'
+    }).then((result) => {
+      if (result.value) {
+        this.sendId.emit(id);
+        Swal.fire(
+          'Deleted!',
+          'Your imaginary file has been deleted.',
+          'success'
+        );
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire(
+          'Cancelled',
+          'Your imaginary file is safe :)',
+          'error'
+        );
+      }
+    });
   }
+
+  /**
+   * create function which will be called on add project button
+   * @param projectForm projectForm of type model ProjectList
+   */
+  public loadProjectForm(projectForm: ProjectList): void {
+    let flag = 0;
+    this.projectListPresenter.createProjectForm(projectForm);
+
+    this.projectListPresenter.addFormDetails.subscribe((projectData: ProjectList) => {
+      if (flag === 0) {
+        flag = 1;
+        this.currentPage = 1;
+        this.updatedDetails = projectData;
+        this.addProject.emit(this.updatedDetails);
+      }
+    });
+
+    this.projectListPresenter.updateFormDetails.subscribe((projectData: ProjectList) => {
+      if (flag === 0) {
+        flag = 1;
+        this.updatedDetails = projectData;
+        this.updateProject.emit(this.updatedDetails);
+      }
+    });
+  }
+
 }

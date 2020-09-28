@@ -4,7 +4,7 @@
         <button class="btn btn-primary" type="button">Filter</button>
     </div>
     <div class="col-md-2">
-        <button class="btn btn-primary" type="button">Add New</button>
+        <button class="btn btn-primary" type="button" (click)="loadProjectForm(null)">Add New</button>
     </div>
 </div>
 <div class="m-4 p-4">
@@ -72,7 +72,7 @@
                 <td>{{ project.quantity }}</td>
                 <td class="d-flex">
                     <button class="btn btn-warning">Edit</button>
-                    <button class="btn btn-danger ml-2">Delete</button>
+                    <button class="btn btn-danger ml-2" (click)="deleteProject(project.id)">Delete</button>
                 </td>
             </tr>
         </tbody>
