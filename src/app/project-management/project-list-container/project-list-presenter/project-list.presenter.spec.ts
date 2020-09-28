@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ProjectListPresenter } from './project-list-presenter';
+import { ProjectListPresenter } from './project-list.presenter';
 
 describe('ProjectListPresenter', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
